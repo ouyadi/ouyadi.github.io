@@ -1,0 +1,2161 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src='https://d3js.org/d3.v5.min.js'></script>
+<script src='https://requirejs.org/docs/release/2.3.6/minified/require.js'></script>
+<style> 
+.tooltip {
+  position: absolute;
+  width: 190px;
+  height: 70px;
+  padding: 3px;
+  background-color: rgb(254, 254, 254);
+  pointer-events: none;
+  border-style: solid; 
+  border-color: rgb(160, 160, 160); 
+  border-width: 1px; 
+  font-weight: bold;
+}
+
+.life_line {
+    fill: none;
+    stroke: #ffab00;
+    stroke-width: 3;
+}
+
+.gdp_line {
+    fill: none;
+    stroke: #4c5cd9;
+    stroke-width: 3;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.dot {
+  stroke: #000;
+}
+
+.region-filter{
+    position: relative;
+    top: 10%;
+    left: 0%
+}
+.income-filter{
+    position: relative;
+    top: 15%;
+    left: 0%
+}
+
+.container{
+    position: fixed;
+    top: 0%;
+    left:0%;
+}
+
+.svg{
+    position: relative;
+    top: 0%;
+    left:0%;
+}
+
+</style>
+<body>
+<span class="container">
+    <div style="padding-top: 10px;padding-bottom: 10px">
+        <H2>How economy development affects life expectancy</H2>
+    </div>
+    
+    <svg width=1000 height=600 class="svg">
+
+    <div>
+        <button onclick="window.location.href = 'explore.html'">Next</button>
+    </div>
+</span>
+</svg>
+<script>
+
+var worldData=[
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1960,
+   "Value": 452.32560736,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1960,
+   "Value": 52.572026321,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1960,
+   "Value": 3032250289,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1961,
+   "Value": 464.200802176,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1961,
+   "Value": 53.07766,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1961,
+   "Value": 3073414947,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1962,
+   "Value": 489.897304015,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1962,
+   "Value": 53.501647326,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1962,
+   "Value": 3126522093,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1963,
+   "Value": 516.720482666,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1963,
+   "Value": 54.035490344,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1963,
+   "Value": 3191775835,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1964,
+   "Value": 554.82060142,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1964,
+   "Value": 54.715153792,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1964,
+   "Value": 3257440880,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1965,
+   "Value": 591.86825632,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1965,
+   "Value": 55.384505409,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1965,
+   "Value": 3324538968,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1966,
+   "Value": 628.785881948,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1966,
+   "Value": 56.125512827,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1966,
+   "Value": 3394809860,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1967,
+   "Value": 655.691355064,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1967,
+   "Value": 56.83893439,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1967,
+   "Value": 3464473634,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1968,
+   "Value": 693.206605713,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1968,
+   "Value": 57.445334529,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1968,
+   "Value": 3535103119,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1969,
+   "Value": 747.488323085,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1969,
+   "Value": 58.059999448,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1969,
+   "Value": 3610072658,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1970,
+   "Value": 805.345267201,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1970,
+   "Value": 58.653518696,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1970,
+   "Value": 3685815205,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1971,
+   "Value": 871.289264448,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1971,
+   "Value": 59.180133889,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1971,
+   "Value": 3763467423,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1972,
+   "Value": 984.76227467,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1972,
+   "Value": 59.665531633,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1972,
+   "Value": 3840341722,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1973,
+   "Value": 1176.709780274,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1973,
+   "Value": 60.11241607,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1973,
+   "Value": 3916313974,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1974,
+   "Value": 1331.068308081,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1974,
+   "Value": 60.604871272,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1974,
+   "Value": 3992941316,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1975,
+   "Value": 1454.604353444,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1975,
+   "Value": 61.046618267,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1975,
+   "Value": 4067812797,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1976,
+   "Value": 1554.613255697,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1976,
+   "Value": 61.462807296,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1976,
+   "Value": 4140725717,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1977,
+   "Value": 1727.923267422,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1977,
+   "Value": 61.880092444,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1977,
+   "Value": 4213403178,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1978,
+   "Value": 1999.312500504,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1978,
+   "Value": 62.233659131,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1978,
+   "Value": 4287248579,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1979,
+   "Value": 2282.515214345,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1979,
+   "Value": 62.588124209,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1979,
+   "Value": 4362952966,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1980,
+   "Value": 2527.468012417,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1980,
+   "Value": 62.866735426,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1980,
+   "Value": 4439412151,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1981,
+   "Value": 2571.842095724,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1981,
+   "Value": 63.199708841,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1981,
+   "Value": 4517865693,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1982,
+   "Value": 2502.127234685,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1982,
+   "Value": 63.517797856,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1982,
+   "Value": 4599238699,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1983,
+   "Value": 2507.879962296,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1983,
+   "Value": 63.757792916,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1983,
+   "Value": 4681318990,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1984,
+   "Value": 2557.541200017,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1984,
+   "Value": 64.015420474,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1984,
+   "Value": 4763100740,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1985,
+   "Value": 2641.197629409,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1985,
+   "Value": 64.267207041,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1985,
+   "Value": 4846395309,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1986,
+   "Value": 3067.358326243,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1986,
+   "Value": 64.564669098,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1986,
+   "Value": 4932167979,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1987,
+   "Value": 3428.939833693,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1987,
+   "Value": 64.815638598,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1987,
+   "Value": 5020053998,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1988,
+   "Value": 3769.757612255,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1988,
+   "Value": 65.022757562,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1988,
+   "Value": 5108862657,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1989,
+   "Value": 3868.555060024,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1989,
+   "Value": 65.241283719,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1989,
+   "Value": 5197808183,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1990,
+   "Value": 4275.878158618,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1990,
+   "Value": 65.435062394,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1990,
+   "Value": 5288137359,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1991,
+   "Value": 4456.140581531,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1991,
+   "Value": 65.628540926,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1991,
+   "Value": 5375716954,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1992,
+   "Value": 4659.95858026,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1992,
+   "Value": 65.787958529,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1992,
+   "Value": 5459838024,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1993,
+   "Value": 4663.212333254,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1993,
+   "Value": 65.912577189,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1993,
+   "Value": 5544808371,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1994,
+   "Value": 4933.86998963,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1994,
+   "Value": 66.122360065,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1994,
+   "Value": 5628818958,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1995,
+   "Value": 5403.773899391,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1995,
+   "Value": 66.319767734,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1995,
+   "Value": 5713659163,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1996,
+   "Value": 5445.842194831,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1996,
+   "Value": 66.613686224,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1996,
+   "Value": 5796553892,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1997,
+   "Value": 5350.970676289,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1997,
+   "Value": 66.913491913,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1997,
+   "Value": 5879181284,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1998,
+   "Value": 5264.763964423,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1998,
+   "Value": 67.175455395,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1998,
+   "Value": 5960951251,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 1999,
+   "Value": 5387.669444572,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 1999,
+   "Value": 67.403589389,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 1999,
+   "Value": 6041479766,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2000,
+   "Value": 5490.161271148,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2000,
+   "Value": 67.682809149,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2000,
+   "Value": 6121371868,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2001,
+   "Value": 5388.104874767,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2001,
+   "Value": 67.978934006,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2001,
+   "Value": 6200826289,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2002,
+   "Value": 5524.906426373,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2002,
+   "Value": 68.249015904,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2002,
+   "Value": 6280008070,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2003,
+   "Value": 6122.928436103,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2003,
+   "Value": 68.523450867,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2003,
+   "Value": 6359405021,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2004,
+   "Value": 6810.931947232,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2004,
+   "Value": 68.861765553,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2004,
+   "Value": 6439366735,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2005,
+   "Value": 7285.441776501,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2005,
+   "Value": 69.135427012,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2005,
+   "Value": 6519872183,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2006,
+   "Value": 7796.606220279,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2006,
+   "Value": 69.474966824,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2006,
+   "Value": 6601083228,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2007,
+   "Value": 8674.324209807,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2007,
+   "Value": 69.79407704,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2007,
+   "Value": 6682860600,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2008,
+   "Value": 9398.100943058,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2008,
+   "Value": 70.083277858,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2008,
+   "Value": 6765986891,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2009,
+   "Value": 8801.74582559,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2009,
+   "Value": 70.405674678,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2009,
+   "Value": 6849272706,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2010,
+   "Value": 9525.491731853,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2010,
+   "Value": 70.683009512,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2010,
+   "Value": 6932596129,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2011,
+   "Value": 10459.029239958,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2011,
+   "Value": 70.971704301,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2011,
+   "Value": 7014792135,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2012,
+   "Value": 10573.054282975,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2012,
+   "Value": 71.215609883,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2012,
+   "Value": 7099311892,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2013,
+   "Value": 10747.405720467,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2013,
+   "Value": 71.45987782,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2013,
+   "Value": 7184861447,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2014,
+   "Value": 10908.984825862,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2014,
+   "Value": 71.692981963,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2014,
+   "Value": 7271057715,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2015,
+   "Value": 10199.103451675,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2015,
+   "Value": 71.8565563,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2015,
+   "Value": 7357233590,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2016,
+   "Value": 10229.45283734,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2016,
+   "Value": 72.05664307,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2016,
+   "Value": 7443810911,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "NY.GDP.PCAP.CD",
+   "Indicator Name": "GDP per capita (current US$)",
+   "Number of Records": 1,
+   "Year": 2017,
+   "Value": 10748.710126977,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.DYN.LE00.IN",
+   "Indicator Name": "Life expectancy at birth, total (years)",
+   "Number of Records": 1,
+   "Year": 2017,
+   "Value": 72.231588889,
+   "Region": ""
+ },
+ {
+   "Country Code": "WLD",
+   "Country Name": "World",
+   "Income Group": "",
+   "Indicator Code": "SP.POP.TOTL",
+   "Indicator Name": "Population, total",
+   "Number of Records": 1,
+   "Year": 2017,
+   "Value": 7529719387,
+   "Region": ""
+ }
+]
+
+let worldMap = new Map();
+for (let index in worldData){
+    var lifeExpectancy = null;
+    var gdpPerCapita = null;
+    var population = null;
+    let item = worldData[index];
+    if(item['Indicator Name']==='Life expectancy at birth, total (years)'){
+          lifeExpectancy = item['Value'];
+    }
+    else if(item['Indicator Name']==='GDP per capita (current US$)'){
+        gdpPerCapita = item['Value'];
+    }else if(item['Indicator Name']==='Population, total'){
+        population = item['Value'];
+    }
+    let year = item['Year'];
+    var data = null;
+    if(!worldMap.has(year)){
+        data = {
+            "year":item['Year'],
+            "lifeExpectancy": null,
+            "gdpPerCapita": null,
+            "population": null
+        };
+    }
+    else{
+        data = worldMap.get(year);
+    }
+    if(lifeExpectancy!=null){
+        data.lifeExpectancy = lifeExpectancy;
+    }
+    if(gdpPerCapita!=null){
+        data.gdpPerCapita = gdpPerCapita;
+    }
+    if(population!=null){
+        data.population = population;
+    }
+    worldMap.set(year,data)
+}
+
+let worldDataList = Array.from(worldMap.values()).sort(function(a,b){
+    if(a.year>=b.year){
+        return 1;
+    }
+    else{
+        return -1;
+    }
+});
+
+console.log(worldDataList);
+
+var margin = {top: 50, right: 50, bottom: 50, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
+
+var xValue = function(d) { return "Year: "+d.year;}, // data -> value
+    xScale = d3.scaleLinear().range([0, width]), // value -> display
+    xMap = function(d) { return xScale(xValue(d));}; // data -> display
+    xScale.domain([1960, 2017])
+
+var yValueGDP = function(d) { return "GDP Per Capita: "+Math.round(d.gdpPerCapita);}, // data -> value
+    yScaleGDP = d3.scaleLinear().range([height, 0]); // value -> display
+var yMapGDP = function(d) { return yScale(yValueGDP(d));}; // data -> display
+    yScaleGDP.domain([400, 11000]);
+
+var yValueLifeExpectancy = function(d) { return "Life Expectancy: "+Math.round(d.lifeExpectancy*100)/100;}, // data -> value
+    yScaleLifeExpectancy = d3.scaleLinear().range([height, 0]); // value -> display
+var yMapLifeExpectancy = function(d) { return yScale(yValueLifeExpectancy(d));}; // data -> display
+    yScaleLifeExpectancy.domain([50, 80]);
+
+var svg = d3.selectAll("svg");
+
+var lifeSpanLine = d3.line()
+            .x(function(d, i){return xScale(d.year)+margin.left;})
+            .y(function(d){return yScaleLifeExpectancy(d.lifeExpectancy)+margin.top;})
+            .curve(d3.curveMonotoneX);
+
+svg.append("path")
+    .datum(worldDataList) // 10. Binds data to the line 
+    .attr("class", "life_line") // Assign a class for styling 
+    .attr("d", lifeSpanLine); // 11. Calls the line generator 
+
+var gdpLine = d3.line()
+            .x(function(d, i){return xScale(d.year)+margin.left;})
+            .y(function(d){return yScaleGDP(d.gdpPerCapita)+margin.top})
+            .curve(d3.curveMonotoneX);
+
+svg.append("path")
+    .datum(worldDataList) // 10. Binds data to the line 
+    .attr("class", "gdp_line") // Assign a class for styling 
+    .attr("d", gdpLine); // 11. Calls the line generator 
+
+d3.selectAll("svg")
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + (margin.top+height) + ")")
+    .call(d3.axisBottom(xScale))
+    .append("text")
+    .attr("class", "label")
+    .attr("x", width)
+    .attr("y", -6)
+    .style("text-anchor", "end")
+    .style('fill', 'black')
+    .style("font-size", "14px")
+    .text("Year");
+
+d3.selectAll("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .call(d3.axisLeft(yScaleLifeExpectancy).tickFormat(d3.format("~s")))
+    .append("text")
+    .attr("class", "label")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .style('fill', 'black')
+    .style("font-size", "14px")
+    .text("Life Expectancy");
+
+d3.selectAll("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + (margin.left+width) + "," + margin.top + ")")
+    .call(d3.axisLeft(yScaleGDP).tickFormat(d3.format("~s")))
+    .append("text")
+    .attr("class", "label")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .style('fill', 'black')
+    .style("font-size", "14px")
+    .text("GDP Per Capita");
+
+svg.append("text").text("GDP Per Capita")
+                 .attr("transform","translate("+(margin.left+width-210)+","+(height-10)+")");
+
+svg.append("rect").attr("fill","#4c5cd9")
+.attr("transform","translate("+(margin.left+width-240)+","+(height-20)+")")
+.attr("width",25).attr("height",15);
+
+svg.append("text").text("Life Expectancy")
+                 .attr("transform","translate("+(margin.left+width-210)+","+(height+20)+")");
+
+svg.append("rect").attr("fill","#ffab00")
+.attr("transform","translate("+(margin.left+width-240)+","+(height+10)+")")
+.attr("width",25).attr("height",15);
+
+svg.append("text")
+    .attr("x", width / 2 )
+    .attr("y", margin.top)
+    .style("text-anchor", "middle")
+    .style("font-weight", "bold")
+    .text("World Population Life Expectancy VS GDP Per Capita(1960-2017)");
+
+</script>
+
+</body>
+</html>
