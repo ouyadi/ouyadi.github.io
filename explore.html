@@ -42,6 +42,12 @@
     left:0%;
 }
 
+.nav{
+    position: fixed;
+    bottom: 2%;
+    left:2%;
+}
+
 .svg{
     position: relative;
     top: 0%;
@@ -53,9 +59,12 @@
 <span class="container">
     <div style="padding-top: 10px;padding-bottom: 10px">
         <H3>Explore how human's lifespan is impacted for each country</H3>
+        <p>
+        The relationship between income and life expectancy has been demonstrated by a number of statistical studies. For example, indicates that individuals born in wealthier countries, on average, can expect to live longer than those born in poor countries. Across countries, high life expectancy is associated with high income per capita.  You can use below chart to explores how the connection between per capita GDP and life expectancy interact with each other in the world for countries. You can also use region and income filter to explore the data and find out some interesting facts. 
+
+        </p>
     </div>
     <div>
-        <button onclick="window.location.href = 'home.html'">Back</button>
         <span class="region-filter">
         Region:
         <select id="regionFilter" onchange="updateRegionFilter(this.value)">
@@ -79,9 +88,13 @@
             </select>
         </span>
     </div>
-    <svg width=1000 height=600 class="svg">
+    <svg width=1000 height=600 class="svg"></svg>
+    <span class="nav">
+     <button onclick="window.location.href = 'next.html'">Back</button>
+    </span>
 </span>
-</svg>
+
+
 <script>
 var jsonArray = [
   {
@@ -6440,7 +6453,7 @@ let countryList = Array.from(countryMap.values()).sort(function(a,b){
 
 var margin = {top: 50, right: 50, bottom: 50, left: 50},
     width = 960 - margin.left - margin.right,
-    height = 800 - margin.top - margin.bottom;
+    height = 600 - margin.top - margin.bottom;
 
 var xValue = function(d) { return "Life Expectancy: "+Math.round(d.lifeExpectancy*100)/100;}, // data -> value
     xScale = d3.scaleLinear().range([0, width]), // value -> display
@@ -6538,6 +6551,16 @@ d3.selectAll("svg")
     .style('fill', 'black')
     .style("font-size", "14px")
     .text("Life Expectancy");
+
+svg.append("text")
+    .attr("x", width / 2 )
+    .attr("y", margin.top)
+    .style("text-anchor", "middle")
+    .style("font-weight", "bold")
+    .text("Life Expectancy VS GDP Per Capita By Countries(2010)");
+
+
+
 function updateRegionFilter(value){
     let incomeFilterValue = document.getElementById("incomeFilter").value;
     if(value !== ""){

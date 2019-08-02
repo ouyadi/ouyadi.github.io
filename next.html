@@ -6,7 +6,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src='https://d3js.org/d3.v5.min.js'></script>
-<!-- <script src='https://requirejs.org/docs/release/2.3.6/minified/require.js'></script> -->
 <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 
 <style> 
@@ -68,20 +67,22 @@
 }
 
 
+
 </style>
 <body>
 <span class="container">
     <div style="padding-top: 10px;padding-bottom: 10px">
         <H2>Relationship Between Economic Development And Life Expectancy</H2>
         <p>
-         Life expectancy at birth is defined as how long, on average, a newborn can expect to live, if current death rates do not change. Life expectancy at birth is one of the most frequently used health status indicators. Gains in life expectancy at birth can be attributed to a number of factors, including rising living standards, improved lifestyle and better education, as well as greater access to quality health services. Chart shown below indicate over the past decades, world population's life expectancy has greatly increased.  
+         As chart shown below, world population's life expectancy is highly correlated to world's GDP Per Capita. It should be easy to understand, as higher economic development level lift more population out of poverty, rising living standards, improved lifestyle and better education, as well as greater access to quality health services.
         </p>
     </div>
     
     <svg width=1000 height=600 class="svg">
 
     <div>
-        <button style="position: relative;bottom: 1%" onclick="window.location.href = 'next.html'">Next</button>
+        <button onclick="window.location.href = 'home.html'">Back</button>
+        <button onclick="window.location.href = 'explore.html'">Next</button>
     </div>
 </span>
 </svg>
@@ -2085,6 +2086,15 @@ svg.append("path")
     .attr("class", "life_line") // Assign a class for styling 
     .attr("d", lifeSpanLine); // 11. Calls the line generator 
 
+var gdpLine = d3.line()
+            .x(function(d, i){return xScale(d.year)+margin.left;})
+            .y(function(d){return yScaleGDP(d.gdpPerCapita)+margin.top})
+            .curve(d3.curveMonotoneX);
+
+svg.append("path")
+    .datum(worldDataList) // 10. Binds data to the line 
+    .attr("class", "gdp_line") // Assign a class for styling 
+    .attr("d", gdpLine); // 11. Calls the line generator 
 
 d3.selectAll("svg")
     .append("g")
@@ -2115,7 +2125,28 @@ d3.selectAll("svg")
     .style("font-size", "14px")
     .text("Life Expectancy");
 
+d3.selectAll("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + (margin.left+width) + "," + margin.top + ")")
+    .call(d3.axisLeft(yScaleGDP).tickFormat(d3.format("~s")))
+    .append("text")
+    .attr("class", "label")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .style('fill', 'black')
+    .style("font-size", "14px")
+    .text("GDP Per Capita");
 
+svg.append("text").text("GDP Per Capita")
+                 .attr("transform","translate("+(margin.left+width-210)+","+(height-10)+")");
+
+svg.append("rect").attr("fill","#4c5cd9")
+.attr("transform","translate("+(margin.left+width-240)+","+(height-20)+")")
+.attr("width",25).attr("height",15);
 
 svg.append("text").text("Life Expectancy")
                  .attr("transform","translate("+(margin.left+width-210)+","+(height+20)+")");
@@ -2129,22 +2160,22 @@ svg.append("text")
     .attr("y", margin.top)
     .style("text-anchor", "middle")
     .style("font-weight", "bold")
-    .text("World Population Life Expectancy(1960-2017)");
+    .text("World Population Life Expectancy VS GDP Per Capita(1960-2017)");
 
 const annotations = [
   {
     note: {
-      label: "World population's life expectancy has greatly increased during past decades",
+      label: "Population's life expectancy is highly correlated to GDP Per Capita",
       title: "",
       align: "middle",  
       wrap: 300, 
       padding: 10  
     },
     color: ["#0d0d0d"],
-    x: 600,
-    y: 280,
-    dy: 100,
-    dx: 100
+    x: 660,
+    y: 320,
+    dy: 60,
+    dx: 60
   }
 ]
 
